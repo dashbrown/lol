@@ -1,0 +1,12 @@
+Game  Position  Champ     KDA       Game      Lane        Misc
+1     Support   Naut      1/7/4     Lost      Won         Every other lane fed
+2     Support   Thresh    3/4/17    Won       Won         
+3     Support   Naut      4/1/6     Won       Won         
+4     Support   Naut      0/4/3     Lost      Lost (d/c)  Troll adc/mid
+5     Support   Naut      5/2/26    Won       Won
+6     Support   Naut      7/3/16    Won       Lost
+7     Support   Naut      2/4/13    Won       Lost
+8     Support   Naut      3/4/14    Won       Won
+9     Support   Thresh    1/4/16    Won       Won
+10    Support   Annie     3/1/5     Won       Tie
+11    Support   Annie     3/3/9     Lost      Won

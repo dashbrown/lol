@@ -1,0 +1,65 @@
+Howdy friends. I've been sitting on this for a while now, but Spring Break hit to I figured I might as well share it now that I have time to explain everything. Something that comes up in a lot of my games is: I have 400 gold and I'm laning against an AD champ; should I build a cloth armor or a ruby crystal? The real answer is, of course, to be a man and build a long sword and kill his ass. Your effective health is infinite if your lane opponent is dead. Skip to the "Results" at the bottom if you don't care about the math.
+
+#Math
+
+Out goal is to maximize our *effective health*. Effective health is the total amount of damage you can take before you die. It factors in armor and MR, and it's a good measure of how "tanky" you are. Effective health against a single damage type is calculated as follows:
+
+    effective health = health * 1 / (damage multiplier)
+
+Damage multiplier is the percent damage you take from either physical or magical sources. Armor and MR are calculated the same way, that is:
+
+    damage multiplier = 100 / (100 + Resistance)
+
+Therefore:
+
+    effective health = health * (100 + armor) / 100
+
+So if you have 100 armor and 1000 health,
+
+    effective health = 1000 * (100 + 100) / 100
+    effective health = 2000 (against physical damage)
+
+Now, were interested in maximizing our effective health. So is it better to build armor or health? It depends on how much of each we have. We use the function for effective health as a function of armor and health and compare the results of building each, and see which is better. Thus:
+
+    effective health = health + health * resistance / 100
+
+This is a simple optimization problem (thank god I was paying attention in calc). We want to maximize effective health (as a function of health and armor, which we'll consider analogous to gold spend on health and gold spent on armor) subject to the constraint that:
+
+    (300g/112.5 health) * health + (300g/15 armor) * armor = total gold
+
+Thus (if anyone knows how to get the gradient symbol on here please help):
+
+    gradient effective health = lambda * gradient cost
+    gradient effective health = <1 + armor/100, health/100>
+    gradient cost = <2.6, 20>
+    1 + armor/100 = 2.6
+    health/100 = 20
+    1 + armor/100 = health/100
+    armor = 0.133 * health - 100
+
+If your armor is less than 0.133 * health - 100 you want to build armor, if it is greater, you want to build health. Magic resist works similarly, but comes out to:
+
+    magic resist = 0.148 * health - 100
+
+Because Null-Magic Mantle is slightly more cost efficient than Cloth Armor.
+
+## Multiple Damage Types
+
+Things get more interesting when we take both physical and magic damage. The intuitive response is that if I'm taking half physical and half magic damage, the value of armor and mr is halved. However, this is not the case. This, again is a calculus problem. However, because we have multiple types of damage and damage reduction, it's a bit more complicated than above. Rather than calculate the increase in effective health from buying a given item, we calculate *time to die*. This is amount of time it takes for a target with X armor, Y mr, and Z health, to die, given the target is taking P physical damage per second and Q magical damage per second. Time to die is calculated as follows:
+
+    time_to_die = health / (magical_damage_per_second_after_mr + physical_damage_per_second_after_armor)
+
+#Results
+
+##Against a single damage type
+
+[Normalized Health vs Armor](http://i.imgur.com/97u31G3.png)
+
+[Normalized Health vs MR](http://i.imgur.com/7zMjJCP.png)
+
+
+
+
+
+
+
