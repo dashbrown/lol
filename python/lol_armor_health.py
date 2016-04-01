@@ -129,7 +129,7 @@ def build_plot(xs, ys, x, y, t, m1, m2, filename):
   plt.text(1250, ys[-1]/2+50, m2)
   plt.savefig(filename)
 
-def build_file(p,m,norm = True):
+def build_file(p,m,norm = False):
   pdps = p
   mdps = m
   spend_gold = spend_gold_currey if not norm else spend_gold_currey_norm
@@ -137,15 +137,14 @@ def build_file(p,m,norm = True):
   xs = [int(x) for x in xs]
   ys = [int(y) for y in ys]
   zs = [int(z) for z in zs]
-  with open("../txt/md_norm_health_armor_mr_" + str(pdps) + "_" + str(mdps) + ".md","w") as f:
-    f.write("| Health | Armor | MR | Gold |\n")
-    f.write("|:---:|:---:|:---:|:---:|\n")
+  with open("../txt/md_health_armor_mr_" + str(pdps) + "_" + str(mdps) + ".md","w") as f:
+    f.write("| Health | Armor | MR |\n")
+    f.write("|:---:|:---:|:---:|\n")
     for i in xrange(len(xs)):
       if xs[i] >= 0 and ys[i] >= 0 and zs[i] >= 0:
         f.write("|" + str(xs[i]) + \
                 "|" + str(ys[i]) + \
-                "|" + str(zs[i]) + \
-                "|" + str(gs[i]) + "|\n")  
+                "|" + str(zs[i]) + "|\n")  
 
 if __name__ == '__main__':
 
