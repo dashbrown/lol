@@ -75,6 +75,19 @@ def time_to_die(health, armor, mr, pdps, mdps):
   # return total_dps
   return health / total_dps
 
+def all_above_zero(x,*args):
+  return [x[0], x[1], x[2]]
+
+def spend_gold_currey(i):
+  def spend_gold(x,*args):
+    return [2.67*x[0] + 20*x[1] + 18*x[2] - i]
+  return spend_gold
+
+def spend_gold_currey_norm(i):
+  def spend_gold(x,*args):
+    return [3*x[0] + 30*x[1] + 18*x[2] - i]
+  return spend_gold
+
 def ttd(x, sign = 1.0, p = 1.0, m = 1.0):
   return sign * time_to_die(x[0], x[1], x[2], p, m)
 
@@ -89,13 +102,13 @@ def ttd_jac(x, sign = 1.0, p = 1.0, m = 1.0):
       (100 * (m * (100 + x[1]) + p * (100 + x[2]))**2)
   return np.array([dh, da, dm])
 
-def run_ttd(range, p=1.0, m=1.0):
+def run_ttd(range, p=1.0, m=1.0, spend_gold = spend_gold_currey):
   xs = []
   ys = []
   zs = []
   gs = []
   for i in range:
-    spend_all_gold = spend_gold_currey(i)
+    spend_all_gold = spend_gold(i)
     res = fmin_slsqp(ttd,[1400,0,0],args=(-1,p,m,),
           ieqcons=[all_above_zero,],
           eqcons=[spend_all_gold,],
@@ -105,7 +118,6 @@ def run_ttd(range, p=1.0, m=1.0):
     zs.append(res[2])
     gs.append(i)
   return xs, ys, zs, gs
-
 
 def build_plot(xs, ys, x, y, t, m1, m2, filename):
   plt.clf()
@@ -117,28 +129,23 @@ def build_plot(xs, ys, x, y, t, m1, m2, filename):
   plt.text(1250, ys[-1]/2+50, m2)
   plt.savefig(filename)
 
-def all_above_zero(x,*args):
-  return [x[0], x[1], x[2]]
-
-def spend_gold_currey(i):
-  def spend_gold(x,*args):
-    return [2.67*x[0] + 20*x[1] + 18*x[2] - i]
-  return spend_gold
-
-def build_file(p,m):
+def build_file(p,m,norm = True):
   pdps = p
   mdps = m
-  xs, ys, zs, gs = run_ttd(xrange(500,20000,10), pdps, mdps)
+  spend_gold = spend_gold_currey if not norm else spend_gold_currey_norm
+  xs, ys, zs, gs = run_ttd(xrange(500,20000,250), pdps, mdps, spend_gold)
   xs = [int(x) for x in xs]
   ys = [int(y) for y in ys]
   zs = [int(z) for z in zs]
-  with open("health_armor_mr_" + str(pdps) + "_" + str(mdps) + ".txt","w") as f:
+  with open("../txt/md_norm_health_armor_mr_" + str(pdps) + "_" + str(mdps) + ".md","w") as f:
+    f.write("| Health | Armor | MR | Gold |\n")
+    f.write("|:---:|:---:|:---:|:---:|\n")
     for i in xrange(len(xs)):
       if xs[i] >= 0 and ys[i] >= 0 and zs[i] >= 0:
-        f.write("Health: " + str(xs[i]) + \
-                "; Armor: " + str(ys[i]) + \
-                "; MR: " + str(zs[i]) + \
-                "; Gold: " + str(gs[i]) + "\n")  
+        f.write("|" + str(xs[i]) + \
+                "|" + str(ys[i]) + \
+                "|" + str(zs[i]) + \
+                "|" + str(gs[i]) + "|\n")  
 
 if __name__ == '__main__':
 

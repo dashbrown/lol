@@ -1,4 +1,9 @@
-Howdy friends. I've been sitting on this for a while now, but Spring Break hit to I figured I might as well share it now that I have time to explain everything. Something that comes up in a lot of my games is: I have 400 gold and I'm laning against an AD champ; should I build a cloth armor or a ruby crystal? The real answer is, of course, to be a man and build a long sword and kill his ass. Your effective health is infinite if your lane opponent is dead. Skip to the "Results" at the bottom if you don't care about the math.
+Howdy friends. I've been sitting on this for a while now, but Spring Break hit to I figured I might as well share it now that I have time to explain everything. Something that comes up in a lot of my games is: I have 400 gold and I'm laning against an AD champ; should I build a cloth armor or a ruby crystal? The real answer is, of course, to be a man and build a long sword and kill his ass. Your effective health is infinite if your lane opponent is dead. 
+
+#Charts!
+
+
+
 
 #Math
 
@@ -25,7 +30,7 @@ Now, were interested in maximizing our effective health. So is it better to buil
 
 This is a simple optimization problem (thank god I was paying attention in calc). We want to maximize effective health (as a function of health and armor, which we'll consider analogous to gold spend on health and gold spent on armor) subject to the constraint that:
 
-    (300g/112.5 health) * health + (300g/15 armor) * armor = total gold
+    (400g/150 health) * health + (300g/15 armor) * armor = total gold
 
 Thus (if anyone knows how to get the gradient symbol on here please help):
 
@@ -41,7 +46,7 @@ If your armor is less than 0.133 * health - 100 you want to build armor, if it i
 
     magic resist = 0.148 * health - 100
 
-Because Null-Magic Mantle is slightly more cost efficient than Cloth Armor.
+Because Null-Magic Mantle is slightly more cost efficient than Cloth Armor (rito pls ap item rework).
 
 ## Multiple Damage Types
 
@@ -49,13 +54,8 @@ Things get more interesting when we take both physical and magic damage. The int
 
     time_to_die = health / (magical_damage_per_second_after_mr + physical_damage_per_second_after_armor)
 
-#Results
+This, again, can be turned into an optimization problem. We consider five variables, physical dps, magical dps, armor, health, and mr. We want to maximize time to die as a function of gold. Rather than solve this and get a nice equation like we can get for a single damage type (holy shit you should have seen me try and deal with the derivative of time to die), it's easier to just use estimate with a few given gold values and build a table from that. If you're interested the code can be found [here](https://github.com/dashbrown/lol)
 
-##Against a single damage type
-
-[Normalized Health vs Armor](http://i.imgur.com/97u31G3.png)
-
-[Normalized Health vs MR](http://i.imgur.com/7zMjJCP.png)
 
 
 
