@@ -8,4 +8,4 @@ lol_armor_health.py:
 mana_user.py:
   simulate a caster using abilities until oom
 
-This is going to work!
+Haha!
