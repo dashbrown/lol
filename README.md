@@ -7,3 +7,5 @@ lol_armor_health.py:
 
 mana_user.py:
   simulate a caster using abilities until oom
+
+Oh man is this going to work
